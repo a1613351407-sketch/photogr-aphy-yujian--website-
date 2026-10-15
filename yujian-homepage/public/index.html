@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111715">
+  <meta name="description" content="玉鉴 PHOTO STUDIO，以影像珍藏此刻。填写拍摄意向问卷、发现武汉取景地，或在星迹中点亮私人回忆。">
+  <title>玉鉴 · PHOTO STUDIO</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <main class="hero" id="main">
+    <video id="hero-video" class="hero-video" muted loop playsinline preload="metadata" poster="/media/hero-poster.jpg" aria-label="玉鉴首页影像">
+      <source src="/media/46_raw.mp4" type="video/mp4">
+    </video>
+    <div class="shade" aria-hidden="true"></div>
+    <header class="header">
+      <a class="brand" href="/" aria-label="玉鉴首页"><img class="brand-logo" src="/media/yujian-logo-white.png" alt=""><span class="brand-mark">玉鉴</span></a>
+      <nav class="desktop-nav" aria-label="主导航">
+        <a href="/" class="active" aria-current="page">首页</a>
+        <a href="https://yujian-photo-studio.a1613351407.chatgpt.site">拍摄问卷</a>
+        <a href="https://jingqu-wuhan-0913.a1613351407.chatgpt.site">景区探索</a>
+        <a href="https://xingji-memory-atlas.a1613351407.chatgpt.site">星迹</a>
+      </nav>
+      <a class="studio-link" href="https://yujian-photo-studio.a1613351407.chatgpt.site/studio" aria-label="摄影师工作台"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5.8 20v-2.5a6.2 6.2 0 0 1 12.4 0V20"/></svg><span>摄影师工作台</span></a>
+      <button class="menu-toggle" aria-label="打开导航菜单" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="手机导航" hidden><a href="/" aria-current="page">首页</a><a href="https://yujian-photo-studio.a1613351407.chatgpt.site">拍摄问卷 <span>↗</span></a><a href="https://jingqu-wuhan-0913.a1613351407.chatgpt.site">景区探索 <span>↗</span></a><a href="https://xingji-memory-atlas.a1613351407.chatgpt.site">星迹 <span>↗</span></a><a href="https://yujian-photo-studio.a1613351407.chatgpt.site/studio">摄影师工作台 <span>↗</span></a></nav>
+    </header>
+    <section class="hero-copy" aria-labelledby="hero-title">
+      <p class="eyebrow">YU JIAN &nbsp; / &nbsp; PHOTO STUDIO</p>
+      <h1 id="hero-title">以影像，<br class="mobile-break">珍藏此刻。</h1>
+    </section>
+    <div class="hero-bottom">
+      <div class="destinations">
+        <a class="destination" href="https://yujian-photo-studio.a1613351407.chatgpt.site"><span><small>从你的想法开始</small><strong>拍摄意向问卷</strong></span><span class="link-arrow" aria-hidden="true">↗</span></a>
+        <a class="destination" href="https://jingqu-wuhan-0913.a1613351407.chatgpt.site"><span><small>寻找武汉的下一处风景</small><strong>景区探索 · 景去</strong></span><span class="link-arrow" aria-hidden="true">↗</span></a>
+        <a class="destination" href="https://xingji-memory-atlas.a1613351407.chatgpt.site"><span><small>把回忆点亮成星</small><strong>星迹 · 回忆星图</strong></span><span class="link-arrow" aria-hidden="true">↗</span></a>
+      </div>
+      <div class="video-controls" aria-label="背景视频控制">
+        <span class="timecode" id="timecode" aria-hidden="true">00:00 / 00:15</span>
+        <button id="toggle-play" class="icon-button" aria-label="播放背景视频"><svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6v12M16 6v12"/></svg><svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7Z"/></svg></button>
+        <button id="toggle-sound" class="icon-button" aria-label="开启视频声音" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4Z"/><path class="sound-off" d="m16 9 5 6m0-6-5 6"/><path class="sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></button>
+      </div>
+    </div>
+    <div class="progress-track" aria-hidden="true"><div id="video-progress"></div></div>
+    <p class="video-notice" id="video-notice" role="status" hidden></p>
+  </main>
+  <footer><a class="footer-brand" href="/">玉鉴 <span>PHOTO STUDIO</span></a><span>让每一次相遇，有迹可循。</span><span>© <span id="year">2026</span> 玉鉴</span></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

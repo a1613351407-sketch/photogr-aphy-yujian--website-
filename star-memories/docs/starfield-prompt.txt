@@ -1,0 +1,7 @@
+Use case: photorealistic-natural
+Asset type: standalone cinematic starfield background for an elegant, intimate memory constellation web app, landscape 16:9.
+Primary request: a high-quality atmospheric photographic deep navy night sky with delicate dusty indigo and steel-blue Milky Way wisps concentrated across the middle-right, tiny natural stars, subtle restrained warm ivory glimmers, low-contrast luxurious cinematic depth.
+Composition/framing: wide landscape 16:9, edge-to-edge sky; keep the left third very dark, quiet and spacious as negative space for UI text. Nebulous starlight is soft and diffuse toward the center-right. The background will sit behind luminous interactive stars, so its own stars must be tiny and unobtrusive, no dominant bright point.
+Lighting/mood: contemplative, intimate, tranquil, immense depth, subtle photographic grain and feathered celestial dust, restrained realistic astrophotography.
+Color palette: near-black midnight navy, dusty indigo, subtle steel blue, a few dim warm ivory stars.
+Constraints: only sky and faint cosmic dust; no text, no UI, no constellation lines, no planet, no land, no horizon, no moon, no large star flares, no bright focal object, no watermark. Avoid saturated purple, cyan glow, harsh highlights and fantasy nebula drama.

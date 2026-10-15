@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const origin='https://xingji.test',listeners={},values=new Map(),messages=[],requested=[];let offline=false;let inventory={revision:'test',assets:['/assets/app.js','/_next/static/style.css']};
+const key=value=>new URL(typeof value==='string'?value:value.url,origin).href;
+const cache={async addAll(paths){for(const path of paths){const response=await network(path);if(!response.ok)throw new Error('precache failed');values.set(key(path),response)}},async match(path){return values.get(key(path))?.clone()},async put(path,response){values.set(key(path),response)}};
+const network=async request=>{requested.push(key(request));if(offline)throw new Error('offline');return new Response(key(request).endsWith('/offline-assets.json')?JSON.stringify(inventory):'cached '+key(request),{status:200})};
+const self={location:{origin},clients:{claim:async()=>{}},skipWaiting:async()=>{},addEventListener:(name,handler)=>listeners[name]=handler};
+vm.runInNewContext(await readFile('public/service-worker.js','utf8'),{self,caches:{open:async()=>cache,keys:async()=>['xingji-local-app-v1'],delete:async()=>true},fetch:network,URL,Response,setTimeout,clearTimeout});
+let task;listeners.install({waitUntil:promise=>task=promise});await task;assert.ok(values.has(origin+'/'));
+listeners.message({data:{type:'CHECK_OFFLINE_READY'},source:{postMessage:value=>messages.push(value)},waitUntil:promise=>task=promise});await task;assert.equal(messages.at(-1).type,'OFFLINE_READY');assert.ok(values.has(origin+'/assets/app.js'));assert.ok(values.has(origin+'/_next/static/style.css'));assert.ok(!requested.some(value=>value.includes('/api/')||value.startsWith('https://other.test')));
+offline=true;let response;listeners.fetch({request:{method:'GET',url:origin+'/',mode:'navigate'},respondWith:value=>response=value});assert.match(await (await response).text(),/cached https:\/\/xingji.test\//);
+listeners.fetch({request:{method:'GET',url:origin+'/assets/app.js',mode:'cors'},respondWith:value=>response=value});assert.match(await (await response).text(),/app.js/);
+let cachedPrivate=false;listeners.fetch({request:{method:'GET',url:origin+'/api/memories',mode:'cors'},respondWith:()=>cachedPrivate=true});assert.equal(cachedPrivate,false);
+const readyCount=messages.length;listeners.message({data:{type:'CHECK_OFFLINE_READY'},source:{postMessage:value=>messages.push(value)},waitUntil:promise=>task=promise});await task;assert.equal(messages.length,readyCount+1,'Readiness remains true when the network is unavailable');
+values.delete(origin+'/assets/app.js');const before=messages.length;listeners.message({data:{type:'CHECK_OFFLINE_READY'},source:{postMessage:value=>messages.push(value)},waitUntil:promise=>task=promise});await task;assert.equal(messages.length,before,'Incomplete caches must not claim offline readiness');
+offline=false;inventory={assets:['/api/photos/private']};listeners.install({waitUntil:promise=>task=promise});await assert.rejects(task,/Invalid app asset/);assert.ok(!requested.some(value=>value.includes('/api/')));
+console.log(JSON.stringify({ok:true,checks:['app shell precache','JS and CSS cached','private API and third-party resources excluded','offline navigation','offline static assets','readiness verified without a network','incomplete cache is not called ready','private inventory is rejected']}));

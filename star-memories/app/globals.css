@@ -1,0 +1,342 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+:root{--background:#080f21;--foreground:#eeeadd;--card:#111b30;--card-foreground:#eeeadd;--popover:#111b30;--popover-foreground:#eeeadd;--primary:#e9dab5;--primary-foreground:#0b152a;--secondary:#1b2a43;--secondary-foreground:#eeeadd;--muted:#192339;--muted-foreground:#a5afc1;--accent:#26364f;--accent-foreground:#fff4d5;--destructive:#ffaaa3;--border:#ffffff24;--input:#ffffff30;--ring:#dfc998;--radius:.75rem;--font-sans:'PingFang SC','Microsoft YaHei',system-ui,sans-serif}
+@theme inline{--color-background:var(--background);--color-foreground:var(--foreground);--color-primary:var(--primary);--color-primary-foreground:var(--primary-foreground);--color-border:var(--border);--color-input:var(--input);--color-ring:var(--ring);--color-muted:var(--muted);--color-muted-foreground:var(--muted-foreground);--color-accent:var(--accent);--color-accent-foreground:var(--accent-foreground);--color-popover:var(--popover);--color-popover-foreground:var(--popover-foreground);--color-destructive:var(--destructive)}
+*{box-sizing:border-box}body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--font-sans);font-size:16px;line-height:1.6}button,a,input,textarea{ -webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{cursor:pointer;font:inherit}button:disabled{cursor:wait;opacity:.55}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #ead6a7;outline-offset:6px}button{color:inherit} .observatory{position:relative;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 64% 42%,#1a2948 0%,#111b32 29%,#080f21 67%)}.observatory:before{content:'';pointer-events:none;position:absolute;inset:0;opacity:.26;background-image:radial-gradient(1px 1px at 21px 37px,#e0e9ff 99%,transparent),radial-gradient(1px 1px at 92px 128px,#d5e6ff 99%,transparent);background-size:173px 151px,257px 227px}.masthead{position:relative;z-index:2;margin:0 5%;height:100px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}.brand{display:flex;align-items:center;gap:14px;font-size:32px;color:#e6d5ac}.brand span{font-family:'Songti SC','STSong',serif;letter-spacing:5px;font-size:25px}.brand small{font:10px Georgia,serif;letter-spacing:3px;margin-left:10px;color:#a1aec3}.new-star{display:flex;gap:10px;align-items:center;border:1px solid #dfc99855;background:#d8cba30b;border-radius:30px;padding:11px 23px;font-size:14px;color:#eddeb9;transition:background .2s}.new-star:hover{background:#d8cba325}.intro{position:absolute;z-index:1;left:7%;top:21%;pointer-events:none}.eyebrow{color:#a4b0c5;letter-spacing:4px;font-size:12px}.intro h1{font-family:'Songti SC','STSong',Georgia,serif;font-size:clamp(30px,3vw,47px);font-weight:400;letter-spacing:5px;line-height:1.6;margin:26px 0 22px}.intro>p:last-child{color:#99a6ba;font-size:14px;letter-spacing:1px}.sky{height:calc(100svh - 185px);min-height:590px;width:73%;margin-left:25%;position:relative}.orbit{position:absolute;border:1px solid #acbdd214;border-radius:50%;pointer-events:none}.orbit-one{width:72%;height:76%;left:15%;top:11%;transform:rotate(-24deg)}.orbit-two{width:88%;height:52%;left:4%;top:24%;transform:rotate(-24deg)}.axis{position:absolute;pointer-events:none;background:#b9cdec10;left:6%;top:48%;width:87%;height:1px;transform:rotate(-24deg)}.axis-two{transform:rotate(66deg);width:58%;left:22%}.north{position:absolute;left:49%;top:7%;font:12px Georgia,serif;letter-spacing:4px;color:#72849f}.star{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;min-width:60px;min-height:60px;display:flex;align-items:center;justify-content:center;padding:8px}.star-label{position:absolute;top:100%;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px;color:#dbcca6;display:flex;align-items:center;gap:6px}.sky-note{position:absolute;bottom:2%;width:100%;display:flex;gap:10px;align-items:center;justify-content:center;color:#91a1ba;font-size:13px;letter-spacing:2px}.sky-footer{position:relative;margin:0 5%;min-height:85px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff12;font-size:12px;color:#8090a9;letter-spacing:1px}.sky-footer b{font:22px Georgia,serif;color:#d7cbae;margin-right:12px}
+@media(max-width:760px){.masthead{height:80px}.brand small{display:none}.brand{gap:8px}.new-star{padding:8px 14px}.intro{position:relative;top:auto;left:auto;margin:35px 8% 0}.intro h1{font-size:31px;line-height:1.4;margin:15px 0;letter-spacing:3px}.intro h1 br{display:block}.intro>p:last-child{font-size:13px}.sky{width:100%;margin:0;height:51svh;min-height:380px}.sky-footer{min-height:75px;font-size:11px}.sky-footer b{font-size:18px;margin-right:5px}.star-label{font-size:12px}.star{min-width:48px;min-height:48px}.sky-note{font-size:12px;bottom:0}.north{top:1%}.orbit-one{height:78%;top:7%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.constellation-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.constellation-lines line{stroke:#e4c889;stroke-width:.12;opacity:.3}.star-hint{display:flex;align-items:center;gap:6px;pointer-events:none;position:absolute;top:100%;white-space:nowrap;font-size:12px;color:#dcca9e;opacity:0;transition:opacity .2s}.star:hover .star-hint,.star:focus-visible .star-hint{opacity:1}.star-label{font-variant-numeric:tabular-nums;font-size:14px;letter-spacing:.5px}.revisit-note{margin-top:36px!important;color:#cfbd97!important}.sector-nav{display:flex;align-items:center;gap:10px}.sector-nav button{border:0;background:transparent;padding:8px;color:#c5cedd;min-height:40px;min-width:32px}.sector-nav button:disabled{opacity:.2;cursor:default}.privacy{display:flex;gap:7px;align-items:center}.text-button{display:inline-flex;align-items:center;gap:8px;font-size:14px;border:0;background:none;padding:10px 0;color:#c8d1df}.text-button:hover{color:#ead6ab}.record-mode{min-height:100svh}.record-page{position:relative;max-width:1050px;margin:0 auto;padding:46px 30px 80px}.record-heading{margin-bottom:36px}.record-heading h1{font-family:'Songti SC','STSong',Georgia,serif;font-weight:400;font-size:35px;letter-spacing:3px;margin:12px 0}.record-heading h1:focus{outline:none}.record-heading>p:last-child{font-size:14px;color:#9aabc0;margin-top:12px}.memory-form{display:grid;grid-template-columns:1.12fr 1fr;gap:56px}.field-label{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px;color:#dce0e6;letter-spacing:.7px}.field-label span{font-size:12px;color:#92a2b9}.photo-stage{background:#111d3270;border:1px dashed #a9bdd944;border-radius:6px;min-height:350px;overflow:hidden;backdrop-filter:blur(12px)}.upload-empty{min-height:350px;width:100%;border:0;background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;color:#d6c8a8}.upload-empty svg{margin-bottom:15px}.upload-empty small{color:#8f9db2;font-size:12px}.upload-empty:hover{background:#d8cba306}.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.upload-photo{position:relative;aspect-ratio:1}.upload-photo img{width:100%;height:100%;object-fit:cover;border-radius:3px}.upload-photo:only-child{grid-column:1/-1;aspect-ratio:4/3}.upload-photo button{position:absolute;top:6px;right:6px;border:0;border-radius:50%;padding:6px;background:#07101bcc;color:white;min-width:34px;min-height:34px;display:grid;place-items:center}.add-photo{margin-top:10px}.memory-input,.memory-textarea{background:#111d3290;border:1px solid #a9bdd92e;color:#eeeadd;border-radius:5px;font-size:16px;width:100%;box-shadow:none}.memory-input{height:49px;padding:12px;color-scheme:dark}.memory-textarea{min-height:216px;resize:vertical;padding:15px;line-height:1.9}.memory-textarea::placeholder{color:#8493aa}.words-label{margin-top:25px}.word-count{text-align:right;font-size:12px;color:#8494ac;margin-top:7px}.save-button{background:#e4d5b0;color:#131c2b;height:49px;border-radius:5px;width:100%;font-size:15px;margin-top:23px;border:1px solid #ecdfc1}.save-button:hover{background:#f1e4c4}.save-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:#97a6bb;margin-top:13px}.error{font-size:14px;color:#ffb7ad;line-height:1.6;margin-top:15px}.error button{text-decoration:underline;background:none;border:0}.processing{display:flex;gap:8px;align-items:center;font-size:13px;color:#afbed2}.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.status-page{position:relative;padding:80px 25px;text-align:center;min-height:70vh}.memory-read{display:grid;grid-template-columns:1.1fr 1fr;gap:55px;align-items:start}.memory-gallery{display:grid;gap:18px}.memory-gallery img{display:block;width:100%;height:auto;max-height:650px;object-fit:contain;border:7px solid #d6d4cb;box-shadow:0 15px 60px #0005;background:#111e31}.memory-story{padding:20px 0}.memory-story>p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:2.05;color:#d9dce2;margin:25px 0;font-size:16px}.story-star{color:#ead6a7;font-size:36px;font-family:Georgia,serif}.story-end{font-size:12px;letter-spacing:1px;color:#899bb5;display:block;margin:35px 0}.small-star{color:#dbc596;margin:0 10px}.text-only{grid-template-columns:1fr;max-width:700px}.reading .record-heading h1{font-size:42px;font-family:Georgia,'Songti SC',serif;font-variant-numeric:tabular-nums}.record-mode .observatory:before{opacity:.1}.record-mode:after{content:'';position:absolute;inset:0;background:#080f2155;pointer-events:none;z-index:0}.record-page,.status-page{z-index:1}
+@media(max-width:760px){.memory-form,.memory-read{grid-template-columns:1fr;gap:30px}.record-page{padding:30px 23px 50px}.record-heading{margin-bottom:28px}.record-heading h1{font-size:30px}.photo-stage,.upload-empty{min-height:260px}.memory-textarea{min-height:190px}.sky-footer{flex-wrap:wrap;gap:4px;padding:15px 0}.privacy{width:100%;justify-content:center;margin-top:7px}.revisit-note{margin-top:15px!important}.intro{margin-top:27px}.sky{min-height:385px}.star-label{font-size:12px;letter-spacing:0}.memory-read{gap:10px}.reading .record-heading h1{font-size:34px}.record-heading .eyebrow{font-size:12px}}
+.observatory{background-image:linear-gradient(90deg,#080f219c 0%,#080f2133 48%,#080f2138 100%),url('/images/deep-space-panorama.png');background-size:cover;background-position:center;background-attachment:fixed}.observatory:before{background:none}.record-mode{background-image:linear-gradient(#080f21a6,#080f21d9),url('/images/deep-space-panorama.png')}
+@media(max-width:760px){.observatory{background-position:62% center;background-attachment:scroll}.intro{background:linear-gradient(90deg,#080f2133,transparent)}}
+
+/* Luminous star markers: a tiny bright core, tapered rays and diffuse light. */
+.star {
+  --starlight: 186, 216, 255;
+  --star-size: 62px;
+  --star-angle: 7deg;
+  --star-delay: -1.7s;
+  isolation: isolate;
+}
+.star-light {
+  position: absolute;
+  width: var(--star-size);
+  height: var(--star-size);
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,249,.95) 0 1px, rgba(var(--starlight),.52) 2px, rgba(var(--starlight),.2) 6px, rgba(var(--starlight),.065) 15px, transparent 31px);
+  transform: rotate(var(--star-angle));
+  transition: filter .45s ease, scale .45s ease;
+  animation: starlight-breathe 5.8s ease-in-out var(--star-delay) infinite;
+}
+.star-light::before, .star-light::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, #fffef1 0%, rgba(243,249,255,.9) 10%, rgba(var(--starlight),.62) 30%, rgba(var(--starlight),.15) 57%, transparent 76%);
+  filter: blur(.45px);
+}
+.star-light::before { width: 82%; height: 2px; }
+.star-light::after { width: 2px; height: 100%; }
+.star-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #fffef6;
+  box-shadow: 0 0 4px 1px #fff9e6, 0 0 11px 3px rgba(var(--starlight),.7), 0 0 24px 6px rgba(var(--starlight),.18);
+}
+.star-rays { position: absolute; inset: 0; }
+.star-rays::before, .star-rays::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44%;
+  height: 1px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #fffef1, rgba(var(--starlight),.35) 35%, transparent 72%);
+  filter: blur(.65px);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.star-rays::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.star:nth-of-type(3n) { --star-size: 48px; --star-angle: -9deg; --star-delay: -3.3s; }
+.star:nth-of-type(4n) { --star-size: 56px; --star-angle: 2deg; --star-delay: -.6s; }
+.star.lit { --starlight: 255, 214, 147; --star-size: 76px; }
+.star.lit .star-core {
+  width: 5px;
+  height: 5px;
+  box-shadow: 0 0 5px 2px #fff7db, 0 0 15px 5px rgba(var(--starlight),.68), 0 0 33px 9px rgba(var(--starlight),.16);
+}
+.star:hover .star-light, .star:focus-visible .star-light { scale: 1.18; filter: brightness(1.65); }
+.star-label, .star-hint { z-index: 1; text-shadow: 0 1px 7px #080f21, 0 0 12px #080f21; }
+@keyframes starlight-breathe {
+  0%, 100% { opacity: .78; }
+  48% { opacity: 1; }
+  72% { opacity: .9; }
+}
+@media (max-width: 760px) {
+  .star { --star-size: 53px; }
+  .star:nth-of-type(3n) { --star-size: 44px; }
+  .star.lit { --star-size: 65px; }
+}
+.constellation-picker { margin-top: 32px; max-width: 250px; pointer-events: auto; }
+.constellation-picker>label { display: block; color: #b2bdcf; font-size: 13px; letter-spacing: 2px; margin-bottom: 10px; }
+.constellation-select { width: 215px; height: 46px!important; padding: 10px 15px!important; border: 1px solid #dfc99845; background: #0d1729bd; color: #e8dcc0; border-radius: 6px; font-size: 15px; backdrop-filter: blur(10px); }
+.constellation-picker>p { color: #a0aec3; font-size: 12px; letter-spacing: .3px; margin-top: 12px; }
+.constellation-menu { background: #101d31f5; color: #eee4ce; border-color: #d9c69945; backdrop-filter: blur(16px); max-height: min(430px,60svh); }
+.constellation-menu [data-slot=select-item] { min-height: 39px; padding-left: 13px; cursor: pointer; }
+.zodiac-symbol { font-family: 'Times New Roman',serif; font-variant-emoji: text; display: inline-block; width: 24px; color: #decda7; text-align: center; font-size: 19px; margin-right: 7px; }
+.constellation-caption { position: absolute; top: 5%; left: 50%; transform: translateX(-50%); display: grid; gap: 5px; text-align: center; white-space: nowrap; pointer-events: none; }
+.constellation-caption>span { font: 20px 'Songti SC',serif; color: #e4d5b4; letter-spacing: 6px; }
+.constellation-caption>small { font-size: 11px; color: #91a4c0; letter-spacing: 2px; }
+.star { transition: left .9s cubic-bezier(.22,.68,.2,1), top .9s cubic-bezier(.22,.68,.2,1); }
+.constellation-lines { animation: constellation-reveal 1.15s ease both; }
+@keyframes constellation-reveal { 0%, 65% { opacity: 0; } 100% { opacity: 1; } }
+.zodiac-sky .constellation-lines line { stroke: #c5d6f0; opacity: .42; stroke-width: .13; }
+.zodiac-sky .constellation-lines .remembered-edge { stroke: #e4c889; opacity: .65; }
+.zodiac-sky .orbit, .zodiac-sky .axis { opacity: .32; }
+@media(min-width:761px) and (max-width:1100px){.constellation-picker{max-width:205px}.constellation-select{width:195px}.constellation-picker>p{max-width:180px;line-height:1.8}.intro{left:5%}.intro>p:last-child{max-width:210px}}
+@media(max-width:760px){
+ .constellation-picker { margin-top: 22px; max-width: none; display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; align-items: center; }
+ .constellation-picker>label { margin: 0; font-size: 13px; }
+ .constellation-select { width: 100%; height: 42px!important; }
+ .constellation-picker>p { grid-column: 1/-1; margin-top: 1px; }
+ .zodiac-sky { min-height: 520px; height: 66svh; }
+ .constellation-caption { top: 3%; }
+ .zodiac-sky .star { min-width: 44px; min-height: 44px; padding: 6px; }
+ .zodiac-sky .star-label { font-size: 12px; top: calc(100% - 2px); }
+ .constellation-select .zodiac-symbol { font-size: 18px; }
+}
+/* The panorama surrounds the camera; memory controls remain accessible DOM buttons. */
+.sky-panorama,.sky-panorama-fallback{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.sky-panorama{opacity:0;transition:opacity .8s;background:#080f21;}
+.sky-panorama.ready{opacity:1;}
+.sky-panorama-fallback{background:linear-gradient(90deg,#080f2199,#080f2122),url('/images/deep-space-panorama.png') center/cover;transform-origin:center;}
+.observatory .masthead,.observatory .sky-footer{z-index:3;}
+.observatory .intro{z-index:3;}
+.spatial-map{z-index:1;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline-offset:-4px;min-height:620px;}
+.spatial-map.is-dragging,.spatial-map.is-dragging .star{cursor:grabbing;}
+.spatial-viewport{position:absolute;inset:0;overflow:hidden;touch-action:none;}
+.space-dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+.spatial-map .star{transition:none;touch-action:none;min-width:48px;min-height:48px;}
+.spatial-map .star-light{scale:var(--depth-scale,1);}
+.spatial-map .star:hover .star-light,.spatial-map .star:focus-visible .star-light{scale:calc(var(--depth-scale,1)*1.14);}
+.spatial-map .constellation-caption{z-index:5000;top:3%;text-shadow:0 2px 14px #080f21;}
+.sky-controls{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);z-index:5000;display:flex;align-items:center;gap:2px;padding:5px 8px;border:1px solid #b9cdec30;border-radius:30px;background:#091426cc;backdrop-filter:blur(14px);cursor:default;touch-action:manipulation;white-space:nowrap;}
+.sky-controls button{color:#e6d9bb;min-width:36px;min-height:36px;border-radius:50%;}
+.sky-controls button:hover{background:#d8cba31a;}
+.sky-controls output{min-width:44px;text-align:center;font-size:12px;color:#b5c5db;font-variant-numeric:tabular-nums;}
+.sky-control-divider{height:15px;width:1px;background:#b9cdec22;margin:0 4px;}
+.sky-controls .sky-reset{border-radius:20px;font-size:12px;padding:0 10px;}
+.spatial-map .sky-note{z-index:5000;bottom:1%;font-size:12px;letter-spacing:.7px;pointer-events:auto;touch-action:pan-y;text-shadow:0 2px 10px #080f21;}
+@media(max-width:760px){.spatial-map{min-height:590px;height:72svh;}.spatial-map .constellation-caption{top:2%;}.sky-controls{bottom:7%;max-width:calc(100% - 24px);gap:0;padding:4px 6px;}.sky-controls button{min-width:34px;min-height:36px;}.sky-controls .sky-reset{padding:0 7px;}.sky-control-divider{margin:0 2px;}.spatial-map .sky-note{font-size:11px;letter-spacing:0;bottom:2%;}.spatial-map .star-label{font-size:12px;}}
+
+.edit-memory{margin-top:16px;border-color:#dfc99866;background:#101c30aa;color:#eddeb9;gap:8px;}
+.cancel-edit{width:100%;margin-top:10px;color:#bdc9db;}
+
+/* Keep all reading and selection controls above the sky, leaving its full width interactive. */
+.sky-layout{position:relative;margin:0 5%}
+.sky-toolbar{position:relative;z-index:2;min-height:96px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.sky-toolbar-copy .eyebrow{font-size:11px;letter-spacing:3px}
+.sky-toolbar-copy h1{font:400 clamp(19px,2vw,26px)/1.3 'Songti SC','STSong',Georgia,serif;letter-spacing:3px;margin:7px 0 0;white-space:nowrap}
+.sky-toolbar .constellation-picker{display:flex;align-items:center;gap:14px;max-width:none;margin:0}
+.sky-toolbar .constellation-picker>label{margin:0;white-space:nowrap;font-size:12px}
+.sky-toolbar .constellation-select{width:190px}
+.sky-layout .spatial-map{width:100%;height:calc(100svh - 281px);min-height:590px;margin:0}
+.masthead-actions{display:flex;align-items:center;gap:18px}
+.account-trigger{display:inline-flex;align-items:center;gap:8px;border:1px solid #dfc99855;border-radius:30px;padding:10px 16px;background:#0b1628a8;color:#e8dcbe;font-size:13px;max-width:170px}
+.account-trigger span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.account-trigger:hover{background:#d8cba325}
+.account-dialog{z-index:60;max-height:calc(100svh - 32px);overflow-y:auto;background:#101c30;color:#eee6d5;border:1px solid #dfc99855;box-shadow:0 25px 80px #0009}
+.account-dialog [data-slot=dialog-title]{font-family:'Songti SC','STSong',serif;font-size:25px;font-weight:400;letter-spacing:2px}
+.account-dialog [data-slot=dialog-description]{color:#a9b8ca;line-height:1.8}
+.account-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.account-tabs button{border:1px solid #dfc99844;border-radius:5px;background:#0d1829;color:#acbad0;padding:10px}
+.account-tabs button[aria-selected=true]{background:#e4d5b0;color:#152033;border-color:#e4d5b0}
+.account-form{display:grid;gap:9px;margin-top:6px}
+.account-form label{font-size:13px;color:#d5dce6;margin-top:8px}
+.account-form input{width:100%;height:46px;border:1px solid #a9bdd955;background:#0a1425;border-radius:5px;color:#f4efe3;padding:0 12px;font-size:15px}
+.account-form input::placeholder{color:#778ba5}
+.account-tip{font-size:12px;color:#a9b8ca;line-height:1.7;margin:6px 0}
+.account-error{font-size:13px;color:#ffb7ad;margin:4px 0}
+.account-submit{width:100%;min-height:45px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:5px;background:#e4d5b0;color:#152033;margin-top:10px}
+.account-submit:hover{background:#f1e4c4}
+.account-panel p{font-size:14px;color:#b7c4d4}
+@media(max-width:760px){
+ .sky-layout{margin:0 5%}
+ .sky-toolbar{min-height:0;padding:20px 0 14px;align-items:stretch;flex-wrap:wrap;gap:14px}
+ .sky-toolbar-copy h1{font-size:21px;margin-top:3px}
+ .sky-toolbar .constellation-picker{width:100%;display:flex;gap:10px}
+ .sky-toolbar .constellation-select{width:min(220px,65vw)}
+ .sky-layout .spatial-map{width:100%;height:72svh;min-height:590px}
+ .masthead-actions{gap:7px}
+ .account-trigger{padding:9px 10px;max-width:130px}
+ .new-star{font-size:12px;padding:8px 10px}
+}
+
+/* Keep the mobile sky and its controls within the usable viewport. */
+@media(max-width:760px),(max-height:500px) and (pointer:coarse){
+ .map-mode{height:100svh;height:100dvh;min-height:0;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+ .map-mode .masthead{flex-shrink:0;height:72px;gap:8px}
+ .map-mode .brand{flex-shrink:0;gap:5px;font-size:26px}
+ .map-mode .brand span{font-size:22px;letter-spacing:3px}
+ .map-mode .masthead-actions{min-width:0;gap:5px}
+ .map-mode .account-trigger{max-width:108px;font-size:12px;padding:8px}
+ .map-mode .new-star{gap:4px;padding:8px;font-size:11px;white-space:nowrap}
+ .map-mode .sky-layout{flex:1;min-height:0;display:flex;flex-direction:column}
+ .map-mode .sky-toolbar{flex-shrink:0;padding:12px 0 8px;gap:8px}
+ .map-mode .sky-toolbar-copy h1{font-size:19px;letter-spacing:2px}
+ .map-mode .sky-toolbar .constellation-select{height:40px}
+ .map-mode .sky-layout .spatial-map{flex:1;width:100%;height:auto;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto auto}
+ .map-mode .spatial-viewport{position:relative;inset:auto;min-height:0;width:100%}
+ .map-mode .sky-controls{position:relative;inset:auto;transform:none;justify-self:center;display:grid;grid-template-columns:40px 40px 1px 40px 40px 40px 1px minmax(0,1fr);gap:0;width:min(100%,336px);max-width:100%;padding:4px;margin:6px 0}
+ .map-mode .sky-controls button{width:100%;height:44px;min-width:0;min-height:44px;padding:0;gap:4px}
+ .map-mode .sky-controls .sky-reset{font-size:12px;padding:0 3px}
+ .map-mode .sky-controls output{min-width:0;font-size:11px}
+ .map-mode .sky-control-divider{margin:0}
+ .map-mode .spatial-map .sky-note{position:relative;inset:auto;min-height:24px;margin:0 0 6px;font-size:10px;line-height:1.5;text-align:center}
+ .map-mode .sky-footer{flex-wrap:wrap;flex-shrink:0;min-height:0;padding:6px 0;gap:0;font-size:10px;letter-spacing:0}
+ .map-mode .sky-footer .privacy{width:100%;justify-content:center;margin-top:0}
+ .map-mode .constellation-caption{top:0;font-size:18px}
+}
+@media(max-width:760px) and (max-height:600px){
+ .map-mode .masthead{height:60px}
+ .map-mode .sky-toolbar{padding:8px 0 4px;gap:4px}
+ .map-mode .sky-toolbar-copy .eyebrow{display:none}
+ .map-mode .sky-toolbar-copy h1{font-size:17px;margin:0}
+}
+
+@media(min-width:761px) and (max-height:500px) and (pointer:coarse){
+ .map-mode .masthead{height:56px}
+ .map-mode .brand small{display:none}
+ .map-mode .sky-toolbar{padding:6px 0;min-height:50px}
+ .map-mode .sky-toolbar-copy .eyebrow{display:none}
+ .map-mode .sky-toolbar .constellation-picker{width:auto}
+ .map-mode .sky-toolbar .constellation-select{width:170px}
+ .map-mode .sky-footer .privacy{width:auto}
+}
+
+/* Memories hang above and below one continuous thread of starlight. */
+.sky-view-options{display:flex;align-items:center;gap:24px}
+.view-switch{display:flex;align-items:center;border:1px solid #c8d6eb30;border-radius:24px;padding:3px;background:#0812229c;flex-shrink:0}
+.view-switch button{display:flex;align-items:center;justify-content:center;gap:7px;background:none;border:0;border-radius:20px;padding:9px 15px;color:#a5b6ce;font-size:12px;white-space:nowrap}
+.view-switch button[aria-pressed=true]{color:#f0dfb8;background:#dac89a1c;box-shadow:inset 0 0 0 1px #dac89a33}
+.timeline-mode{background-image:linear-gradient(#080f2170,#080f21d9),url('/images/deep-space-panorama.png')}
+.memory-timeline{position:relative;padding:10px 0 22px}
+.timeline-intro{display:flex;align-items:center;justify-content:space-between;color:#8e9fb9;font-size:11px;letter-spacing:2px}
+.timeline-intro p{display:flex;align-items:center;gap:15px;color:#d3c3a2;font:13px Georgia,'Songti SC',serif;margin:14px 0}
+.timeline-intro-line{width:44px;height:1px;background:#dbc89566}
+.timeline-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#d5c49b55 #ffffff05;overscroll-behavior-x:contain;scroll-snap-type:x proximity;outline-offset:-2px}
+.timeline-scroll:focus-visible{outline:1px solid #e4d5b077}
+.timeline-rail{display:flex;position:relative;isolation:isolate;list-style:none;padding:0 32px;margin:0;width:max-content;min-width:100%;height:690px}
+.timeline-rail:before{content:'';position:absolute;left:0;right:0;top:342px;height:1px;background:linear-gradient(90deg,transparent,#dbcba988 8%,#dbcba988 92%,transparent);box-shadow:0 0 14px #eee1b333;z-index:-1}
+.timeline-rail:has(>li:only-child){justify-content:center}
+.timeline-item{position:relative;flex:0 0 320px;scroll-snap-align:center;--starlight:242,220,169;--star-size:70px;--star-angle:8deg;--star-delay:-1s}
+.timeline-item:hover,.timeline-item:focus-within,.timeline-item.is-active{z-index:2}
+.timeline-photo-area{position:absolute;left:42px;right:42px;top:24px;height:250px;display:flex;align-items:flex-end;justify-content:center}
+.photo-below .timeline-photo-area{top:428px;align-items:flex-start}
+.timeline-photo-area:after{content:'';position:absolute;left:50%;top:100%;height:68px;width:1px;background:linear-gradient(#d4c5a744,transparent);pointer-events:none}
+.photo-below .timeline-photo-area:after{top:auto;bottom:100%;height:86px;background:linear-gradient(transparent,#d4c5a744)}
+.timeline-photos{display:block;width:100%;padding:6px 6px 0;background:#d9d7cb;border:0;box-shadow:0 18px 45px #0006;transform:rotate(-2deg);transition:transform .3s,box-shadow .3s;color:#324054}
+.photo-below .timeline-photos{transform:rotate(2deg)}
+.timeline-photos:hover,.timeline-photos:focus-visible{transform:rotate(0deg) translateY(-3px);box-shadow:0 22px 48px #0009}
+.timeline-main-photo{display:block;width:100%;height:168px;object-fit:cover;background:#142035;font-size:12px;color:#dce6f4}
+.timeline-photo-strip{display:flex;gap:4px;padding-top:5px}
+.timeline-photo-strip img{width:0;flex:1;min-width:0;height:36px;object-fit:cover;background:#142035}
+.timeline-photo-caption{display:flex;justify-content:space-between;align-items:center;font:12px Georgia,serif;letter-spacing:2px;padding:8px 6px}
+.timeline-photo-caption>span{font:10px 'PingFang SC',sans-serif;letter-spacing:1px;color:#6a717b}
+.timeline-without-photo{text-align:center;align-self:center;color:#a7b3c5;font:14px 'Songti SC','STSong',serif;letter-spacing:2px}
+.timeline-without-photo>span{font-size:34px;color:#d5c8a4;opacity:.5}
+.timeline-node{position:absolute;top:310px;left:0;right:0;text-align:center}
+.timeline-star{position:relative;display:inline-grid;place-items:center;width:64px;height:64px;padding:0;border:0;background:transparent;z-index:1}
+.timeline-star .star-core{background:#fff8df;box-shadow:0 0 5px 2px #fff2d4,0 0 15px 4px #e6c98c99}
+.timeline-star .star-light{filter:brightness(1.15);transition:scale .3s,filter .3s}
+.timeline-star:hover .star-light,.timeline-item:focus-within .star-light,.timeline-item.is-active .star-light{scale:1.4;filter:brightness(1.8)}
+.timeline-node time{position:absolute;top:71px;left:0;right:0;color:#e6d5ad;font:18px Georgia,serif;letter-spacing:1px;pointer-events:none}
+.timeline-node time small{display:block;font:10px Georgia,serif;color:#9faec4;letter-spacing:2px;margin-top:9px}
+.timeline-words{position:absolute;top:115px;left:24px;right:24px;text-align:left;padding:16px 20px;background:#0b1729f5;border:1px solid #d4c2953d;box-shadow:0 12px 40px #0005;border-radius:6px;visibility:hidden;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s,visibility .2s}
+.photo-below .timeline-words{top:auto;bottom:78px}
+.timeline-item:hover .timeline-words,.timeline-item:focus-within .timeline-words,.timeline-item.is-active .timeline-words{visibility:visible;opacity:1;transform:none}
+.timeline-quote{position:absolute;top:4px;left:12px;color:#d4c29566;font:42px Georgia,serif}
+.timeline-words p{position:relative;margin:8px 0 12px;max-height:145px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.9 'Songti SC','STSong',serif;color:#e9e3d4}
+.timeline-words button{display:flex;align-items:center;gap:7px;background:none;border:0;color:#b6c4d9;font-size:11px;padding:8px 0;min-height:32px}
+.timeline-navigation{display:flex;align-items:center;justify-content:space-between;margin-top:16px;color:#8e9fb9;font-size:11px;letter-spacing:1px}
+.timeline-navigation>div{display:flex;align-items:center;gap:16px}
+.timeline-navigation button{width:40px;height:40px;display:grid;place-items:center;border:1px solid #c8d6eb30;border-radius:50%;background:#08122290;color:#e6d5ad}
+.timeline-status{min-height:55vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#cfc4ac;gap:12px}
+.timeline-status h2{font:400 28px 'Songti SC','STSong',serif;letter-spacing:3px}
+.timeline-status p{font-size:13px;color:#a7b6cc;max-width:350px;line-height:1.9}
+@media(max-width:1100px){.sky-view-options{gap:16px}.sky-toolbar .constellation-picker{gap:8px}.sky-toolbar .constellation-select{width:150px}.view-switch button{padding:9px 12px}.sky-toolbar-copy h1{letter-spacing:1px;font-size:21px}}
+@media(max-width:900px) and (min-width:761px){.sky-toolbar{flex-wrap:wrap;padding:16px 0}.sky-view-options{width:100%;justify-content:space-between}.sky-layout .spatial-map{height:calc(100svh - 330px)}}
+@media(max-width:760px){
+ .sky-view-options{width:100%;justify-content:space-between;gap:8px}
+ .view-switch button{padding:8px 10px;font-size:11px;gap:4px}
+ .sky-toolbar .constellation-picker{width:auto;gap:0}
+ .sky-toolbar .constellation-picker>label{display:none}
+ .sky-toolbar .constellation-select{width:126px}
+ .timeline-mode .masthead{height:72px}.timeline-mode .brand{gap:5px}.timeline-mode .brand span{font-size:22px;letter-spacing:3px}
+ .timeline-mode .account-trigger{max-width:108px;font-size:12px;padding:8px}.timeline-mode .new-star{padding:8px;font-size:11px;gap:4px}
+ .timeline-mode .sky-toolbar-copy h1{font-size:20px;letter-spacing:1px;white-space:normal}
+ .timeline-intro{letter-spacing:0;font-size:10px}.timeline-intro p{font-size:12px;gap:10px}
+ .timeline-rail{padding:0 10px;height:690px}.timeline-item{flex-basis:280px}.timeline-photo-area{left:27px;right:27px}
+ .timeline-words{left:10px;right:10px}.timeline-navigation>span{display:none}.timeline-navigation{justify-content:center}
+ .timeline-navigation>div{gap:10px}.timeline-navigation>div>span{font-size:10px;letter-spacing:0}
+ .timeline-mode .sky-footer{padding:12px 0;justify-content:center;gap:0}.timeline-mode .sky-footer .privacy{margin-top:5px}
+}
+@media(prefers-reduced-motion:reduce){.timeline-star .star-light{animation:none}.timeline-photos,.timeline-words,.timeline-star .star-light{transition:none}}
+@media(max-width:360px){.view-switch button{padding:8px 7px;font-size:10px}.sky-toolbar .constellation-select{width:104px}}
+
+
+/* Reserve the same toolbar columns in both views, including the context slot. */
+.sky-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto}
+.sky-toolbar-copy{min-width:0}
+.sky-toolbar-copy h1{overflow:hidden;text-overflow:ellipsis}
+.sky-view-options{display:grid;grid-template-columns:auto 252px;gap:24px;align-items:center}
+.view-context{width:100%;min-width:0;display:flex;align-items:center;justify-content:flex-end;height:48px}
+.timeline-order-label{font-size:12px;color:#a5b6ce;letter-spacing:1px;white-space:nowrap}
+@media(max-width:1100px){
+ .sky-toolbar{grid-template-columns:1fr;padding:16px 0;gap:14px}
+ .sky-view-options{width:100%;grid-template-columns:auto minmax(0,1fr);gap:16px}
+ .sky-layout .spatial-map{height:calc(100svh - 330px)}
+}
+@media(max-width:760px),(max-height:500px) and (pointer:coarse){
+ .observatory:not(.record-mode) .sky-toolbar{grid-template-columns:1fr;padding:12px 0 8px;gap:8px;min-height:0}
+ .observatory:not(.record-mode) .sky-toolbar-copy h1{font-size:19px;letter-spacing:2px;white-space:nowrap;line-height:1.3;margin:7px 0 0}
+ .observatory:not(.record-mode) .sky-toolbar-copy .eyebrow{font-size:11px;letter-spacing:3px}
+ .sky-view-options{grid-template-columns:auto minmax(0,1fr);gap:8px}
+ .view-context{height:40px}
+ .timeline-order-label{font-size:10px;letter-spacing:0}
+ .observatory:not(.record-mode) .constellation-select{height:40px!important}
+}
+@media(max-width:760px) and (max-height:600px){
+ .observatory:not(.record-mode) .masthead{height:60px}
+ .observatory:not(.record-mode) .sky-toolbar{padding:8px 0 4px;gap:4px}
+ .observatory:not(.record-mode) .sky-toolbar-copy .eyebrow{display:none}
+ .observatory:not(.record-mode) .sky-toolbar-copy h1{font-size:17px;margin:0}
+ .timeline-order-label{font-size:9px}
+}
+@media(min-width:761px) and (max-height:500px) and (pointer:coarse){
+ .observatory:not(.record-mode) .masthead{height:56px}
+ .observatory:not(.record-mode) .brand small{display:none}
+ .observatory:not(.record-mode) .sky-toolbar{padding:6px 0;min-height:50px}
+ .observatory:not(.record-mode) .sky-toolbar-copy .eyebrow{display:none}
+}
+
+/* On-device app controls. */
+.local-data-dialog{max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain}
+.local-state{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid #c8d6eb30;background:#08122266;border-radius:7px;color:#dfd2b4}
+.local-state strong{display:block;font-size:14px;font-weight:400}.local-state span{display:block;font-size:11px;color:#93a7c2;margin-top:3px}
+.local-section{border-top:1px solid #c8d6eb1a;padding-top:15px}
+.local-section h3{display:flex;align-items:center;gap:8px;font-size:14px;color:#ddd2bc;font-weight:400;margin:0 0 10px}
+.local-section p{font-size:12px;color:#a9b8ce;line-height:1.9;margin:8px 0}.local-section p svg{display:inline;vertical-align:middle}
+.local-section .local-small{font-size:11px;color:#879bb7}
+.local-backup-actions{display:flex;gap:10px}.local-backup-actions button{display:flex;align-items:center;justify-content:center;gap:7px;flex:1;background:#d4c19516;border:1px solid #d4c1954a;border-radius:6px;padding:11px 8px;font-size:12px;color:#e2d5b5}
+.local-persist{font-size:11px;padding:5px 0}.local-storage-note{font-size:11px;line-height:1.9;color:#9aacbf;margin:0}.local-message{font-size:12px;line-height:1.8;color:#ddcda6;margin:0}
+@media(max-width:760px){.local-data-trigger{max-width:none!important}.local-data-trigger>span{font-size:11px}.local-data-dialog{max-height:calc(100dvh - 24px);padding:22px 20px}.local-section h3{font-size:13px}}

@@ -1,0 +1,9 @@
+.DS_Store
+site.tar.gz
+qa/
+out/
+
+# Local Netlify folder
+.netlify
+
+.netlify/

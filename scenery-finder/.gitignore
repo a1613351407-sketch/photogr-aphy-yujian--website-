@@ -1,0 +1,9 @@
+dist/
+site.tar.gz
+.env
+.env.local
+
+# Local Netlify folder
+.netlify
+
+.netlify/

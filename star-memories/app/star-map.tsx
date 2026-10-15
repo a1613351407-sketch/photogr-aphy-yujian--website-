@@ -1,0 +1,52 @@
+'use client';
+import {useState,useRef,useEffect,useMemo,useCallback,type CSSProperties,type PointerEvent as ReactPointerEvent} from 'react';
+import {Plus,Minus,RotateCcw,RotateCw,Move3d,LoaderCircle,ArrowUpRight} from 'lucide-react';
+import {Button} from '@/components/ui/button';
+import type {Constellation} from '@/lib/constellations';
+import {HOME_VIEW,SkyGestures,clamp,memoryPoint,projectPoint,spaceDust,type View3D} from '@/lib/sky-3d';
+import {createPanorama} from '@/lib/sky-panorama';
+type Props={constellation:Constellation;sector:number;memories:{slot:number;occurredAt:string}[];loading:boolean;loadError:string;onOpen:(slot:number)=>void;onRetry:()=>void};
+const dust=spaceDust();
+export default function StarMap({constellation,sector,memories,loading,loadError,onOpen,onRetry}:Props){
+ const [view,setView]=useState<View3D>({...HOME_VIEW}),[size,setSize]=useState({width:700,height:650}),[dragging,setDragging]=useState(false),[panoramaReady,setPanoramaReady]=useState(false);
+ const root=useRef<HTMLDivElement>(null),viewport=useRef<HTMLDivElement>(null),dustCanvas=useRef<HTMLCanvasElement>(null),skyCanvas=useRef<HTMLCanvasElement>(null),controller=useRef(new SkyGestures()),viewRef=useRef(view),frame=useRef(0),suppressClickUntil=useRef(0),panorama=useRef<ReturnType<typeof createPanorama>>(null),reduced=useRef(false);
+ const animate=useCallback(()=>{
+  if(frame.current)return;
+  const tick=()=>{frame.current=0;const target=controller.current.view,previous=viewRef.current,next={...previous};let remaining=0;
+   for(const key of ['yaw','pitch','roll','zoom'] as const){const difference=target[key]-previous[key];next[key]=Math.abs(difference)<.0005||reduced.current?target[key]:previous[key]+difference*.2;remaining+=Math.abs(target[key]-next[key])}
+   viewRef.current=next;setView(next);if(remaining>.001)frame.current=requestAnimationFrame(tick);
+  };frame.current=requestAnimationFrame(tick);
+ },[]);
+ useEffect(()=>{const media=matchMedia('(prefers-reduced-motion: reduce)');const change=()=>{reduced.current=media.matches};change();media.addEventListener('change',change);return()=>{cancelAnimationFrame(frame.current);media.removeEventListener('change',change)}},[]);
+ useEffect(()=>{if(!viewport.current)return;const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));observer.observe(viewport.current);return()=>observer.disconnect()},[]);
+ useEffect(()=>{if(!skyCanvas.current)return;const canvas=skyCanvas.current;const setup=()=>{panorama.current?.dispose();panorama.current=createPanorama(canvas,()=>setPanoramaReady(true))};const lost=(event:Event)=>{event.preventDefault();setPanoramaReady(false)};setup();canvas.addEventListener('webglcontextlost',lost);canvas.addEventListener('webglcontextrestored',setup);return()=>{panorama.current?.dispose();canvas.removeEventListener('webglcontextlost',lost);canvas.removeEventListener('webglcontextrestored',setup)}},[]);
+ useEffect(()=>{panorama.current?.draw(view)},[view]);
+ useEffect(()=>{controller.current.reset();animate()},[constellation.id,sector,animate]);
+ useEffect(()=>{const el=root.current;if(!el)return;const wheel=(event:WheelEvent)=>{if((event.target as Element).closest('[data-sky-ui]'))return;event.preventDefault();const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?size.height:1);controller.current.zoom(Math.exp(-clamp(delta,-160,160)*.0015));animate()};el.addEventListener('wheel',wheel,{passive:false});return()=>el.removeEventListener('wheel',wheel)},[animate,size.height]);
+ const projected=useMemo(()=>constellation.positions.map((p,i)=>projectPoint(memoryPoint(p,i,size.width,size.height),view,size.width,size.height)),[constellation,view,size]);
+ const edges=useMemo(()=>{if(constellation.id!=='free')return constellation.edges;const ids=memories.filter(m=>Math.floor(m.slot/12)===sector).map(m=>m.slot%12).sort((a,b)=>a-b);return ids.slice(1).map((n,i)=>[ids[i],n] as [number,number])},[constellation,memories,sector]);
+ useEffect(()=>{
+  const canvas=dustCanvas.current,ctx=canvas?.getContext('2d');if(!canvas||!ctx)return;
+  const dpr=Math.min(devicePixelRatio||1,1.75);canvas.width=Math.round(size.width*dpr);canvas.height=Math.round(size.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,size.width,size.height);
+  const unit=Math.max(size.width,size.height)*.85;
+  for(const star of dust){const p=projectPoint({x:star.x*unit,y:star.y*unit,z:star.z*unit},view,size.width,size.height);if(!p.visible||p.x<0||p.x>size.width||p.y<0||p.y>size.height)continue;const radius=clamp(star.size*p.scale,.45,2);ctx.beginPath();ctx.fillStyle=`rgba(204,222,255,${clamp(star.brightness*p.scale*.55,.12,.85)})`;ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill()}
+  for(const [a,b] of edges){const p=projected[a],q=projected[b];if(!p.visible||!q.visible)continue;const lit=memories.some(m=>m.slot===sector*12+a)&&memories.some(m=>m.slot===sector*12+b);ctx.beginPath();ctx.strokeStyle=lit?'rgba(239,208,149,.48)':'rgba(187,210,245,.28)';ctx.lineWidth=.8;ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}
+ },[size,view,projected,edges,memories,sector]);
+ const down=(event:ReactPointerEvent<HTMLDivElement>)=>{if(event.pointerType==='mouse'&&event.button!==0)return;const target=event.target as HTMLElement;if(target.closest('[data-sky-ui]'))return;if(!controller.current.pointers.size)suppressClickUntil.current=0;controller.current.down(event.pointerId,event.clientX,event.clientY);const capture=target.closest<HTMLElement>('button[data-memory-slot]')??event.currentTarget;capture.setPointerCapture(event.pointerId);setDragging(true)};
+ const move=(event:ReactPointerEvent<HTMLDivElement>)=>{if(controller.current.move(event.pointerId,event.clientX,event.clientY))animate()};
+ const up=(event:ReactPointerEvent<HTMLDivElement>)=>{if(!controller.current.pointers.has(event.pointerId))return;if(controller.current.up(event.pointerId))suppressClickUntil.current=performance.now()+450;if(!controller.current.pointers.size)setDragging(false)};
+ const reset=()=>{controller.current.reset();animate()};
+ const zoom=(factor:number)=>{controller.current.zoom(factor);animate()};
+ const turn=(angle:number)=>{controller.current.view.yaw+=angle;animate()};
+ const open=(event:ReactPointerEvent<HTMLButtonElement>,slot:number)=>{event.stopPropagation();if(event.button===0)onOpen(slot)};
+ return <><div className="sky-panorama-fallback" aria-hidden="true" style={{transform:`perspective(1000px) rotateX(${view.pitch*8}deg) rotateY(${view.yaw*5}deg) rotateZ(${view.roll*.2}rad) scale(${1.14+(view.zoom-1)*.1})`}}/><canvas ref={skyCanvas} className={'sky-panorama '+(panoramaReady?'ready':'')} aria-hidden="true" data-camera-yaw={view.yaw.toFixed(3)} data-camera-zoom={view.zoom.toFixed(3)}/>
+ <div ref={root} className={'sky spatial-map '+(constellation.id!=='free'?'zodiac-sky ':'')+(dragging?'is-dragging':'')} data-constellation={constellation.id} data-yaw={view.yaw.toFixed(3)} data-pitch={view.pitch.toFixed(3)} data-roll={view.roll.toFixed(3)} data-zoom={view.zoom.toFixed(3)} role="region" aria-label={constellation.name+'立体回忆星图'} aria-describedby="sky-gesture-hint" tabIndex={0}
+ onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={event=>{suppressClickUntil.current=performance.now()+450;up(event)}} onLostPointerCapture={up}
+ onClickCapture={event=>{if(event.detail!==0&&performance.now()<suppressClickUntil.current&&!(event.target as Element).closest('[data-sky-ui]')){event.preventDefault();event.stopPropagation()}}}
+ onKeyDown={event=>{if(event.target!==event.currentTarget)return;const key=event.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','+','=','-','Home','0'].includes(key)){event.preventDefault();if(key==='ArrowLeft')turn(-.16);if(key==='ArrowRight')turn(.16);if(key==='ArrowUp'||key==='ArrowDown'){controller.current.view.pitch=clamp(controller.current.view.pitch+(key==='ArrowUp'?.12:-.12),-1.3,1.3);animate()}if(key==='+'||key==='=')zoom(1.15);if(key==='-')zoom(1/1.15);if(key==='Home'||key==='0')reset()}}}>
+  <div ref={viewport} className="spatial-viewport"><canvas ref={dustCanvas} className="space-dust" aria-hidden="true"/>{projected.map((p,i)=>{const slot=sector*12+i,record=memories.find(m=>m.slot===slot);return <button key={slot} className={'star '+(record?'lit':'')} data-memory-slot={slot} data-depth={p.depth.toFixed(2)} style={{left:p.x,top:p.y,zIndex:Math.round(p.depth+2000),visibility:p.visible?'visible':'hidden','--depth-scale':clamp(p.scale,.65,1.8),opacity:clamp(.76+p.depth/Math.max(size.width,size.height),.52,1)} as CSSProperties} aria-label={record?'回忆 '+record.occurredAt.slice(0,10).replaceAll('-','.'):'点亮第 '+(slot+1)+' 颗星'} disabled={loading||Boolean(loadError)} onPointerDown={event=>event.stopPropagation()} onPointerUp={event=>open(event,slot)} onClick={event=>{if(event.detail===0)onOpen(slot)}}><span className="star-light" aria-hidden="true"><span className="star-core"/><span className="star-rays"/></span>{record?<span className="star-label">{record.occurredAt.slice(0,10).replaceAll('-','.')}</span>:<span className="star-hint">从这颗星开始 <ArrowUpRight size={13}/></span>}</button>})}</div>
+  <div className="constellation-caption" aria-live="polite"><span>{constellation.name}</span><small>{constellation.id==='free'?'YOUR SKY':constellation.latin.toUpperCase()} · 立体星空</small></div>
+  <div className="sky-controls" data-sky-ui="true" aria-label="星空视角控制"><Button variant="ghost" size="icon" aria-label="向左旋转星空" title="向左旋转" onClick={()=>turn(-.22)}><RotateCcw size={16}/></Button><Button variant="ghost" size="icon" aria-label="向右旋转星空" title="向右旋转" onClick={()=>turn(.22)}><RotateCw size={16}/></Button><span className="sky-control-divider"/><Button variant="ghost" size="icon" aria-label="缩小星空" title="缩小" disabled={view.zoom<=.601} onClick={()=>zoom(1/1.2)}><Minus size={16}/></Button><output aria-label="当前缩放">{Math.round(view.zoom*100)}%</output><Button variant="ghost" size="icon" aria-label="放大星空" title="放大" disabled={view.zoom>=2.599} onClick={()=>zoom(1.2)}><Plus size={16}/></Button><span className="sky-control-divider"/><Button variant="ghost" className="sky-reset" aria-label="复位星空视角" onClick={reset}><Move3d size={16}/>复位</Button></div>
+  <div className="sky-note" id="sky-gesture-hint" data-sky-ui="true" role="status">{loading?<><LoaderCircle size={16} className="spin"/>正在寻找你的星光…</>:loadError?<span className="error">{loadError} <button onClick={onRetry}>重新加载</button></span>:<span>拖动旋转 · 双指 / 滚轮缩放 · 轻点星芒记录</span>}</div>
+ </div></>;
+}

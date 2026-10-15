@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#234ce5"><meta name="description" content="上传一张喜欢的风景，自动识别画面特征，发现武汉相似景色并比较公共交通时间与花费。"><title>景去 · 从一张照片出发</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23234ce5'/%3E%3Cpath d='M11 29L19 10l10 19-10-5z' fill='white'/%3E%3C/svg%3E"><link rel="stylesheet" href="style.css?v=31"><link rel="stylesheet" href="live.css?v=31"></head>
+<body>
+<header class="topbar"><a href="./" class="brand"><span class="brand-icon">↗</span>景去<span class="brand-en">SCENE SEEKER</span></a><div class="header-right"><span class="prototype" id="service-badge">服务检测中</span><button id="origin-open" class="plain">◎ <span id="header-origin">武汉 · 武昌站</span> <span class="muted">⌄</span></button></div></header>
+<main>
+<div class="intro"><div><div class="eyebrow">把喜欢的风景，变成下一站</div><h1>这一幕，去哪里遇见？</h1><p>从一张照片出发，找到相似景色，也找到适合你的走法。</p></div><div class="city-stamp"><span>武汉及周边</span><small>WUHAN & BEYOND</small></div></div>
+<div class="workspace">
+<aside class="source-panel">
+<div class="panel-heading"><h2>你的风景灵感</h2><span>选择输入方式</span></div>
+<div class="source-tabs" role="tablist" aria-label="找景方式">
+<button type="button" id="source-tab-photo" class="source-tab active" role="tab" aria-selected="true" aria-controls="source-panel-photo" data-source-tab="photo">照片识别</button>
+<button type="button" id="source-tab-prompt" class="source-tab" role="tab" aria-selected="false" aria-controls="source-panel-prompt" data-source-tab="prompt" tabindex="-1">提示词找景</button>
+</div>
+<section id="source-panel-photo" class="source-tab-panel" role="tabpanel" aria-labelledby="source-tab-photo" data-source-panel="photo">
+<div class="feature-head"><h3>照片里的景色</h3><span class="small-label" id="analysis-label">等待上传</span></div>
+<p id="analysis-copy" class="secondary">请先上传一张照片，系统将识别画面中的景观特征。</p>
+<div class="photo-wrap" id="dropzone"><img id="source-image" alt="你上传的风景照片" hidden><div class="photo-empty" id="photo-empty"><span aria-hidden="true">＋</span><strong>上传一张风景照片</strong><small>识别景色并寻找武汉相似地点</small><button id="change-photo">选择照片 ↗</button></div><div class="photo-bottom" id="photo-bottom" hidden><span id="photo-label"></span><button id="replace-photo">更换照片 ↗</button></div><input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden></div>
+<p class="upload-hint">拖入或选择照片 · JPG / PNG / WebP · ≤ 10 MB</p>
+<div class="service-status" id="service-status" role="status">正在检查自动识图与公交服务…</div>
+<button class="primary full" id="analyze">联网找景并估算路线 <span>↗</span></button>
+</section>
+<section id="source-panel-prompt" class="source-tab-panel" role="tabpanel" aria-labelledby="source-tab-prompt" data-source-panel="prompt" hidden>
+<div class="scenery-prompt"><label for="scenery-prompt">描述想找的景色</label><textarea id="scenery-prompt" rows="4" maxlength="600" placeholder="例如：武汉有湖边草地和大树、视野开阔、适合拍人像的地方" aria-describedby="prompt-hint"></textarea><p id="prompt-hint">可以直接输入，也可以先上传照片再自动生成。</p><div class="prompt-actions"><button type="button" id="generate-prompt">从照片生成</button><button type="button" id="copy-prompt">复制提示词</button></div><button type="button" class="primary full" id="search-prompt">按提示词找地点 <span>↗</span></button><p id="prompt-status" role="status" aria-live="polite"></p></div>
+</section>
+<div id="feature-tags" class="feature-tags"></div><p class="tiny" id="feature-tags-hint">上传后自动识别景色；你也可以增减标签，再刷新推荐。</p>
+<div class="origin-card"><span class="origin-pin">◎</span><div><small>从这里出发</small><strong id="origin-name">武昌站</strong><span id="origin-address">武汉市武昌区中山路</span></div><button class="plain" id="origin-edit">修改</button></div>
+<label class="departure">计划出发时间<input id="departure-time" type="datetime-local"></label>
+<div class="honesty"><span>ⓘ</span><p>照片在本机压缩、移除 EXIF 并完成基础识图，本站不保存。景观关键词与出发地址通过开放地图服务查找地点和估算路线；精确导航可在结果中的地图链接查看。</p></div>
+</aside>
+<section class="results-panel" aria-label="推荐地点">
+<div class="result-heading"><div><div class="eyebrow blue">YOUR NEXT SCENE</div><h2>相似的风景，<span id="result-count">6</span> 个候选地点</h2></div><button class="text-button" id="ranking-info">排序怎么来的 ⓘ</button></div>
+<div class="preferences"><div class="sorting" aria-label="排序偏好"><button data-sort="balanced" class="active">综合推荐</button><button data-sort="similarity">景色最像</button><button data-sort="time">用时最短</button><button data-sort="cost">路费最低</button></div><div class="limits"><label>单程时间 <select id="time-limit"><option value="999">不限</option><option value="60">1 小时内</option><option value="90">1.5 小时内</option><option value="120">2 小时内</option></select></label><label>单程路费 <select id="cost-limit"><option value="999">不限</option><option value="6">¥6 以内</option><option value="10">¥10 以内</option><option value="20">¥20 以内</option></select></label></div></div>
+<div class="results-meta"><span id="ranking-caption">正在根据景色标签联网寻找地点</span><span id="route-freshness">准备联网搜索</span></div>
+<div id="results" class="results" aria-live="polite"></div>
+<div class="selection-banner" id="selection-banner" hidden></div>
+<div class="bottom-note"><span>☼</span><p>开放地图先返回首批候选地，再自动追加到最多 18 处。路线时间为基础估算；点击高德、百度或腾讯地图可查看实时路线。照片从公开网页、地图与开放图库筛选，可查看风景和环境人像；来源及周边范围逐张标注。季节、水位和天气会影响景观，出发前请核对开放情况。</p></div>
+</section></div>
+<footer><span class="footer-logo">景去</span><span>留住一张照片，也给自己一个出发的理由。</span><button id="design-notes" class="plain">产品设计说明 ↗</button></footer>
+</main>
+<div class="compare-bar" id="compare-bar" hidden><span id="compare-count"></span><button class="plain" id="clear-compare">清空</button><button class="primary" id="show-compare">比较地点 →</button></div>
+<dialog id="modal" aria-labelledby="modal-title"><div class="modal-top"><h2 id="modal-title"></h2><button id="modal-close" class="close" aria-label="关闭弹窗">×</button></div><div id="modal-content"></div></dialog><div id="toast" class="toast" role="status" hidden></div>
+<script src="app.js?v=31"></script></body></html>

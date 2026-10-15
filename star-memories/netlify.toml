@@ -1,0 +1,6 @@
+[build]
+command = "npm run build:netlify"
+publish = "netlify-dist"
+[functions]
+directory = "netlify/functions"
+node_bundler = "esbuild"
